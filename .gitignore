@@ -1,0 +1,6 @@
+node_modules
+dist
+.vite
+.DS_Store
+scripts/raw-dump.json
+scripts/excel-output.txt
