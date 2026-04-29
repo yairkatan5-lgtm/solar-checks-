@@ -46,7 +46,7 @@ export default function PerformanceCharts({ data }) {
             דרגו לפי המדד הרלוונטי. הקו האדום במפת הפיזור הוא הבנצ׳מרק הקבוצתי ({fmt.num1(benchmark)} kWh/kWp).
           </p>
         </div>
-        <div className="inline-flex bg-white border border-brand-ink-100 rounded-full p-1 shadow-soft">
+        <div className="inline-flex bg-white border border-brand-ink-100 rounded-full p-1.5 shadow-soft gap-1">
           {[
             { k: 'production', label: 'ייצור' },
             { k: 'revenue', label: 'הכנסות' },
@@ -55,7 +55,7 @@ export default function PerformanceCharts({ data }) {
             <button
               key={t.k}
               onClick={() => setSortBy(t.k)}
-              className={`px-4 py-2 rounded-full text-sm font-bold transition ${
+              className={`px-5 py-2.5 rounded-full text-sm font-bold transition whitespace-nowrap ${
                 sortBy === t.k ? 'bg-brand-green-500 text-white shadow-green' : 'text-brand-ink-700 hover:bg-brand-ink-50'
               }`}
             ><EditableText id={`perf.tab.${t.k}`}>{t.label}</EditableText></button>
@@ -63,13 +63,13 @@ export default function PerformanceCharts({ data }) {
         </div>
       </div>
 
-      <div className="mt-6 grid lg:grid-cols-3 gap-4">
-        <div className="lg:col-span-2 card p-5">
+      <div className="mt-8 grid xl:grid-cols-5 gap-6">
+        <div className="xl:col-span-3 card p-6 overflow-visible">
           <h3 className="font-bold text-brand-ink-900">דירוג מערכות</h3>
           <p className="text-xs text-brand-ink-500 mb-4">{sortBy === 'production' ? 'kWh' : sortBy === 'revenue' ? '₪' : 'kWh/kWp'}</p>
-          <div style={{ width: '100%', height: 360 }}>
+          <div style={{ width: '100%', height: 430 }}>
             <ResponsiveContainer>
-              <BarChart data={sortedSystems} margin={{ top: 10, right: 0, left: 0, bottom: 30 }}>
+              <BarChart data={sortedSystems} margin={{ top: 18, right: 18, left: 18, bottom: 58 }}>
                 <defs>
                   <linearGradient id="prodGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#fb8732" />
@@ -85,8 +85,8 @@ export default function PerformanceCharts({ data }) {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#eef0f3" strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fill: '#5b6a7a', fontSize: 10 }} interval={0} angle={-50} textAnchor="end" height={60} stroke="#dde2e8" />
-                <YAxis width={65} tick={{ fill: '#5b6a7a', fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} stroke="#dde2e8" />
+                <XAxis dataKey="name" tick={{ fill: '#5b6a7a', fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={74} stroke="#dde2e8" />
+                <YAxis width={84} tick={{ fill: '#5b6a7a', fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} stroke="#dde2e8" />
                 <Tooltip
                   formatter={(value, name) => {
                     if (name === 'production') return [`${fmt.num(value)} kWh`, 'ייצור'];
@@ -99,7 +99,7 @@ export default function PerformanceCharts({ data }) {
                 {sortBy === 'yield' && <ReferenceLine y={benchmark} stroke="#ef4444" strokeDasharray="6 4" label={{ value: `בנצ'מרק ${benchmark}`, fill: '#ef4444', fontSize: 11 }} />}
                 <Bar dataKey={sortBy} radius={[8, 8, 0, 0]}>
                   {sortedSystems.map((entry, idx) => {
-                    if (idx === 0) return <Cell key={idx} fill="#eab308" />; // Gold for #1
+                    if (idx === 0) return <Cell key={idx} fill="#eab308" />;
                     if (sortBy === 'yield') {
                       return <Cell key={idx} fill={entry.yield < benchmark * 0.5 ? '#ef4444' : entry.yield < benchmark * 0.9 ? '#fb8732' : 'url(#yieldGrad)'} />;
                     }
@@ -111,17 +111,17 @@ export default function PerformanceCharts({ data }) {
           </div>
         </div>
 
-        <div className="card p-5">
+        <div className="xl:col-span-2 card p-6 overflow-visible">
           <h3 className="font-bold text-brand-ink-900"><EditableText id="perf.chart.scatter.title">קשר הספק ↔ ייצור</EditableText></h3>
           <p className="text-xs text-brand-ink-500 mb-4">
             כל נקודה היא מערכת. הקו האדום הוא הבנצ׳מרק הקבוצתי ({fmt.num1(benchmark)} kWh/kWp).
           </p>
-          <div style={{ width: '100%', height: 360 }}>
+          <div style={{ width: '100%', height: 430 }}>
             <ResponsiveContainer>
-              <ScatterChart margin={{ top: 10, right: 10, left: 0, bottom: 10 }}>
+              <ScatterChart margin={{ top: 18, right: 28, left: 24, bottom: 30 }}>
                 <CartesianGrid stroke="#eef0f3" strokeDasharray="3 3" />
-                <XAxis type="number" dataKey="x" name="הספק" unit=" kWp" tick={{ fill: '#5b6a7a', fontSize: 11 }} stroke="#dde2e8" />
-                <YAxis type="number" dataKey="y" name="ייצור" unit=" kWh" tick={{ fill: '#5b6a7a', fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} stroke="#dde2e8" />
+                <XAxis type="number" dataKey="x" name="הספק" unit=" kWp" tick={{ fill: '#5b6a7a', fontSize: 11 }} stroke="#dde2e8" height={44} />
+                <YAxis type="number" dataKey="y" name="ייצור" unit=" kWh" width={82} tick={{ fill: '#5b6a7a', fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} stroke="#dde2e8" />
                 <ZAxis range={[60, 60]} />
                 <Tooltip
                   cursor={{ strokeDasharray: '3 3' }}
