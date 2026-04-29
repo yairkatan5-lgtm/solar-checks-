@@ -230,11 +230,12 @@ function Shell() {
               <KpiCards data={solar} />
               <PerformanceCharts data={solar} />
               <Insights data={solar} />
-              <EnvironmentalImpact data={solar} />
             </>
           )}
 
           {effectiveTab === TAB_IDS.health && solar && <SystemHealthReport data={solar} />}
+
+          {effectiveTab === TAB_IDS.environment && solar && <EnvironmentalImpact data={solar} />}
 
           {effectiveTab === TAB_IDS.systems && solar && <SystemsTable data={solar} />}
         </div>
