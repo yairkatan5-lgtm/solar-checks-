@@ -230,6 +230,7 @@ function Shell() {
               <KpiCards data={solar} />
               <PerformanceCharts data={solar} />
               <Insights data={solar} />
+              <EnvironmentalImpact data={solar} />
             </>
           )}
 

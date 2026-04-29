@@ -4,11 +4,6 @@ import { Download, FileSpreadsheet, Info, Loader2 } from 'lucide-react';
 import { fmt } from '../utils/format.js';
 import PeriodFilterBar from './PeriodFilterBar.jsx';
 import { sourceLabelForItem } from '../export/summarySchema.js';
-import {
-  fetchTemplateArrayBuffer,
-  fillSummaryTemplate,
-  downloadBuffer,
-} from '../export/fillSummaryTemplate.js';
 import { exportSummaryXlsxSimple } from '../export/exportSummaryFallback.js';
 
 export default function SolarSummaryHub({
@@ -37,18 +32,11 @@ export default function SolarSummaryHub({
     const stamp = new Date().toISOString().slice(0, 10);
     const filename = `solar-summary-${stamp}.xlsx`;
     try {
-      const tpl = await fetchTemplateArrayBuffer();
-      if (tpl) {
-        const out = await fillSummaryTemplate(tpl, rows);
-        downloadBuffer(out, filename);
-        setExportMsg('הקובץ ירד (תבנית מלאה)');
-      } else {
-        throw new Error('אין תבנית');
-      }
+      await exportSummaryXlsxSimple(rows, filename);
+      setExportMsg('הקובץ יוצא בהצלחה');
     } catch (e) {
-      console.warn('Template export failed, using simple xlsx', e);
-      exportSummaryXlsxSimple(rows, filename);
-      setExportMsg('ייצוא פשוט (ללא תבנית) — שים את קובץ solar-summary-template.xlsx ב-public/templates');
+      console.error('Export failed', e);
+      setExportMsg('שגיאה בייצוא הקובץ');
     } finally {
       setExporting(false);
       setTimeout(() => setExportMsg(null), 5000);

@@ -44,7 +44,7 @@ export default function KpiCards({ data }) {
   const values = {
     systems: { value: t.systems_count, decimals: 0, prefix: '', suffix: '', tag: <>הספק כולל: <CountUp value={t.total_capacity_kwp} decimals={2} /> kWp</> },
     production: { value: t.total_production_kwh, decimals: 0, prefix: '', suffix: ' kWh', tag: <>ממוצע למערכת: <CountUp value={t.total_production_kwh / sysCount} decimals={0} /> kWh</> },
-    revenue: { value: t.total_revenue_nis, decimals: 0, prefix: '₪', suffix: '', tag: <>תעריף ממוצע: ₪{t.weighted_avg_tariff_nis_per_kwh}</> },
+    revenue: { value: t.total_revenue_nis, decimals: 0, prefix: '₪', suffix: '', tag: <>תעריף ממוצע: {t.weighted_avg_tariff_nis_per_kwh} ₪/kWh</> },
     yield: { value: t.avg_specific_yield_kwh_per_kwp, decimals: 1, prefix: '', suffix: ' kWh/kWp', tag: <>בנצ'מרק קבוצתי: {t.group_benchmark_kwh_per_kwp ?? t.expected_yield_benchmark ?? 0} kWh/kWp</> },
   };
 
