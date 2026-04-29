@@ -49,8 +49,8 @@ export default function KpiCards({ data }) {
   };
 
   return (
-    <section className="relative -mt-8 max-w-7xl mx-auto px-6 lg:px-10">
-      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
+    <section className="relative max-w-7xl mx-auto px-6 lg:px-10 mt-2 md:mt-4 scroll-mt-40">
+      <div className="grid grid-cols-1 sm:grid-cols-2 xl:grid-cols-4 gap-5 md:gap-6">
         {cards.map((c, i) => {
           const Icon = c.icon;
           const v = values[c.key];
@@ -61,7 +61,7 @@ export default function KpiCards({ data }) {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true, margin: '-50px' }}
               transition={{ duration: 0.5, delay: i * 0.08 }}
-              className="card lift p-5 relative overflow-hidden"
+              className="card lift p-6 relative overflow-hidden min-h-[190px]"
             >
               <div className={`absolute -top-8 -left-8 w-24 h-24 rounded-full bg-gradient-to-br ${c.accent} opacity-15`} />
               <div className="flex items-center justify-between relative">
@@ -73,10 +73,10 @@ export default function KpiCards({ data }) {
               <div className="mt-4 text-sm text-brand-ink-500 font-semibold">
                 {c.title}
               </div>
-              <div className="mt-1 text-3xl md:text-4xl font-extrabold text-brand-ink-900 leading-tight">
+              <div className="mt-2 text-3xl md:text-[2.6rem] font-extrabold text-brand-ink-900 leading-tight break-words">
                 <CountUp value={v.value} decimals={v.decimals} prefix={v.prefix} suffix={v.suffix} />
               </div>
-              <div className="mt-1 text-xs text-brand-ink-500">{v.tag}</div>
+              <div className="mt-2 text-xs md:text-sm text-brand-ink-500 leading-relaxed">{v.tag}</div>
             </motion.div>
           );
         })}
