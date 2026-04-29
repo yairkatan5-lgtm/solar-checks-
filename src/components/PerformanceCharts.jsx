@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  ScatterChart, Scatter, ZAxis, ReferenceLine, Cell, LabelList,
+  ScatterChart, Scatter, ZAxis, ReferenceLine, Cell,
 } from 'recharts';
 import { fmt } from '../utils/format.js';
 import EditableText from '../utils/EditableText.jsx';
@@ -27,7 +27,17 @@ export default function PerformanceCharts({ data }) {
   }, [data.systems, sortBy]);
 
   const rankedSystems = showAllRanked ? sortedSystems : sortedSystems.slice(0, 20);
-  const rankingHeight = Math.max(520, rankedSystems.length * 32 + 92);
+  const rankingHeight = Math.max(400, rankedSystems.length * 26 + 72);
+
+  const renderBarLabel = ({ x, y, width, value }) => {
+    if (value == null) return null;
+    const label = sortBy === 'yield' ? fmt.num1(value) : sortBy === 'revenue' ? fmt.money(value) : fmt.num(value);
+    return (
+      <text x={x + width + 6} y={y + 9} fill="#334155" fontSize={11} fontWeight={600} textAnchor="start" dominantBaseline="middle">
+        {label}
+      </text>
+    );
+  };
   const rankingUnit = sortBy === 'production' ? 'kWh' : sortBy === 'revenue' ? '₪' : 'kWh/kWp';
 
   const scatterData = useMemo(
@@ -142,7 +152,7 @@ export default function PerformanceCharts({ data }) {
                     label={{ value: `בנצ'מרק ${fmt.num1(benchmark)}`, fill: '#ef4444', fontSize: 11, position: 'top' }}
                   />
                 )}
-                <Bar dataKey={sortBy} radius={[0, 8, 8, 0]} barSize={18}>
+                <Bar dataKey={sortBy} radius={[0, 8, 8, 0]} barSize={14} label={renderBarLabel}>
                   {rankedSystems.map((entry, idx) => {
                     if (idx === 0) return <Cell key={idx} fill="#eab308" />; // Gold for #1
                     if (sortBy === 'yield') {
@@ -150,12 +160,6 @@ export default function PerformanceCharts({ data }) {
                     }
                     return <Cell key={idx} fill={sortBy === 'production' ? 'url(#prodGrad)' : 'url(#revGrad)'} />;
                   })}
-                  <LabelList
-                    dataKey={sortBy}
-                    position="right"
-                    style={{ fill: '#334155', fontSize: 11, fontWeight: 600 }}
-                    formatter={(v) => sortBy === 'yield' ? fmt.num1(v) : sortBy === 'revenue' ? fmt.money(v) : fmt.num(v)}
-                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
