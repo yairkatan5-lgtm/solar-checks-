@@ -15,6 +15,11 @@ body {
   text-rendering: optimizeLegibility;
 }
 
+#dashboard-panels,
+section[id] {
+  scroll-margin-top: 9.5rem;
+}
+
 /* Typography */
 h1, h2, h3, .heading { font-family: 'Rubik', 'Heebo', system-ui, sans-serif; }
 
@@ -79,6 +84,8 @@ h1, h2, h3, .heading { font-family: 'Rubik', 'Heebo', system-ui, sans-serif; }
 }
 .recharts-tooltip-label { color: #1f9c5a !important; font-weight: 700; }
 .recharts-tooltip-item { color: #2a3441 !important; }
+.recharts-wrapper,
+.recharts-surface { overflow: visible; }
 
 /* Animated gradient blob */
 .blob { filter: blur(40px); opacity: 0.55; }
