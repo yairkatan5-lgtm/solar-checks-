@@ -189,6 +189,7 @@ export function unifyPeriods({ summary, bills = [], solar }) {
     totals: Object.fromEntries(Object.entries(totals).map(([k, v]) => [k, +v.toFixed(2)])),
     counts: {
       total: enriched.length,
+      summary: enriched.filter((i) => i.source === 'summary' || i.source === 'both').length,
       summary_only: enriched.filter((i) => i.source === 'summary').length,
       both: enriched.filter((i) => i.source === 'both').length,
       synthesized: enriched.filter((i) => i.source === 'bill' || i.source === 'bill_only_summary_empty').length,
