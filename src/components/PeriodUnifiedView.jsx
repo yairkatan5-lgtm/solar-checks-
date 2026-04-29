@@ -56,15 +56,15 @@ export default function PeriodUnifiedView({ unified, onDeletePeriod }) {
       </div>
 
       {/* Charts */}
-      <div className="grid lg:grid-cols-2 gap-5">
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-5">
+      <div className="grid lg:grid-cols-2 gap-6">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-6 overflow-visible">
           <h3 className="font-extrabold text-brand-ink-900 mb-3">ייצור מול צריכה (kWh)</h3>
-          <div className="h-72">
+          <div className="h-80">
             <ResponsiveContainer>
-              <BarChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+              <BarChart data={chartData} margin={{ top: 14, right: 24, left: 28, bottom: 34 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
-                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={60} />
-                <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} />
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={66} />
+                <YAxis width={82} tick={{ fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} />
                 <Tooltip formatter={(v) => fmt.num(v)} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Bar dataKey="production" name="ייצור" fill="#ec6f1c" radius={[4, 4, 0, 0]} />
@@ -74,14 +74,14 @@ export default function PeriodUnifiedView({ unified, onDeletePeriod }) {
           </div>
         </motion.div>
 
-        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-5">
+        <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-6 overflow-visible">
           <h3 className="font-extrabold text-brand-ink-900 mb-3">רווח סולארי לעומת חשבון חשמל (₪)</h3>
-          <div className="h-72">
+          <div className="h-80">
             <ResponsiveContainer>
-              <LineChart data={chartData} margin={{ top: 8, right: 12, left: 0, bottom: 0 }}>
+              <LineChart data={chartData} margin={{ top: 14, right: 24, left: 28, bottom: 34 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
-                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={60} />
-                <YAxis tick={{ fontSize: 11 }} tickFormatter={(v) => '₪' + fmt.num(v)} />
+                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={66} />
+                <YAxis width={88} tick={{ fontSize: 11 }} tickFormatter={(v) => '₪' + fmt.num(v)} />
                 <Tooltip formatter={(v) => fmt.money2(v)} />
                 <Legend wrapperStyle={{ fontSize: 12 }} />
                 <Line type="monotone" dataKey="profit" name="רווח סולארי" stroke="#1f9c5a" strokeWidth={3} dot={{ r: 3 }} />
