@@ -4,13 +4,13 @@ export default function PeriodFilterBar({ unified, selection, onChange }) {
   const allMode = selection === 'all';
 
   return (
-    <div className="flex flex-wrap gap-3 items-start md:items-center">
+    <div className="flex flex-wrap gap-4 items-start md:items-center">
       <span className="text-sm font-extrabold text-brand-ink-700 shrink-0">תקופות:</span>
-      <div className="flex flex-wrap gap-2">
+      <div className="flex flex-wrap gap-3">
         <button
           type="button"
           onClick={() => onChange('all')}
-          className={`text-xs font-bold rounded-full px-3 py-1.5 border transition ${
+          className={`text-xs font-bold rounded-full px-4 py-2 border transition whitespace-nowrap ${
             allMode
               ? 'bg-brand-green-500 text-white border-brand-green-500'
               : 'bg-white text-brand-ink-700 border-brand-ink-200 hover:border-brand-green-300'
@@ -24,7 +24,7 @@ export default function PeriodFilterBar({ unified, selection, onChange }) {
           return (
             <label
               key={r}
-              className={`inline-flex items-center gap-1.5 text-xs font-semibold rounded-full px-3 py-1.5 border cursor-pointer select-none ${
+              className={`inline-flex items-center gap-2 text-xs font-semibold rounded-full px-4 py-2 border cursor-pointer select-none ${
                 checked ? 'bg-brand-ink-50 border-brand-ink-200' : 'bg-white border-brand-ink-100 opacity-70'
               }`}
             >
