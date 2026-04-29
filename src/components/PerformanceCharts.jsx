@@ -10,6 +10,7 @@ export default function PerformanceCharts({ data }) {
   if (data.synthesized) return null;
   const benchmark = data.totals.group_benchmark_kwh_per_kwp ?? data.totals.expected_yield_benchmark ?? 0;
   const [sortBy, setSortBy] = useState('production');
+  const [showAllRanked, setShowAllRanked] = useState(false);
 
   const sortedSystems = useMemo(() => {
     const arr = [...data.systems];
@@ -24,6 +25,10 @@ export default function PerformanceCharts({ data }) {
       capacity: s.capacity_kwp,
     }));
   }, [data.systems, sortBy]);
+
+  const rankedSystems = showAllRanked ? sortedSystems : sortedSystems.slice(0, 20);
+  const rankingHeight = Math.max(520, rankedSystems.length * 32 + 92);
+  const rankingUnit = sortBy === 'production' ? 'kWh' : sortBy === 'revenue' ? '₪' : 'kWh/kWp';
 
   const scatterData = useMemo(
     () => data.systems.map((s) => ({
@@ -63,13 +68,33 @@ export default function PerformanceCharts({ data }) {
         </div>
       </div>
 
-      <div className="mt-8 grid xl:grid-cols-5 gap-6">
-        <div className="xl:col-span-3 card p-6 overflow-visible">
-          <h3 className="font-bold text-brand-ink-900">דירוג מערכות</h3>
-          <p className="text-xs text-brand-ink-500 mb-4">{sortBy === 'production' ? 'kWh' : sortBy === 'revenue' ? '₪' : 'kWh/kWp'}</p>
-          <div style={{ width: '100%', height: 430 }}>
+      <div className="mt-8 grid 2xl:grid-cols-5 gap-6">
+        <div className="2xl:col-span-3 card p-6 overflow-visible">
+          <div className="flex items-start justify-between gap-4 flex-wrap">
+            <div>
+              <h3 className="font-bold text-brand-ink-900">דירוג מערכות</h3>
+              <p className="text-xs text-brand-ink-500 mt-1">
+                {rankingUnit} · מוצגות {rankedSystems.length} מתוך {sortedSystems.length} מערכות
+              </p>
+            </div>
+            {sortedSystems.length > 20 && (
+              <button
+                type="button"
+                onClick={() => setShowAllRanked((v) => !v)}
+                className="btn-pill btn-ghost text-xs px-4 py-2"
+              >
+                {showAllRanked ? 'הצג 20 ראשונות' : 'הצג הכל'}
+              </button>
+            )}
+          </div>
+          <div className="mt-4 overflow-x-auto">
+            <div style={{ width: '100%', minWidth: 760, height: rankingHeight }}>
             <ResponsiveContainer>
-              <BarChart data={sortedSystems} margin={{ top: 18, right: 18, left: 18, bottom: 58 }}>
+              <BarChart
+                data={rankedSystems}
+                layout="vertical"
+                margin={{ top: 12, right: 44, left: 20, bottom: 18 }}
+              >
                 <defs>
                   <linearGradient id="prodGrad" x1="0" y1="0" x2="0" y2="1">
                     <stop offset="0%" stopColor="#fb8732" />
@@ -85,8 +110,21 @@ export default function PerformanceCharts({ data }) {
                   </linearGradient>
                 </defs>
                 <CartesianGrid stroke="#eef0f3" strokeDasharray="3 3" />
-                <XAxis dataKey="name" tick={{ fill: '#5b6a7a', fontSize: 10 }} interval={0} angle={-45} textAnchor="end" height={74} stroke="#dde2e8" />
-                <YAxis width={84} tick={{ fill: '#5b6a7a', fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} stroke="#dde2e8" />
+                <XAxis
+                  type="number"
+                  tick={{ fill: '#5b6a7a', fontSize: 11 }}
+                  tickFormatter={(v) => sortBy === 'yield' ? fmt.num1(v) : fmt.num(v)}
+                  stroke="#dde2e8"
+                  height={36}
+                />
+                <YAxis
+                  type="category"
+                  dataKey="name"
+                  width={70}
+                  tick={{ fill: '#334155', fontSize: 12, fontWeight: 700 }}
+                  interval={0}
+                  stroke="#dde2e8"
+                />
                 <Tooltip
                   formatter={(value, name) => {
                     if (name === 'production') return [`${fmt.num(value)} kWh`, 'ייצור'];
@@ -96,10 +134,17 @@ export default function PerformanceCharts({ data }) {
                   }}
                   labelFormatter={(l) => `מערכת ${l.replace('#', '')}`}
                 />
-                {sortBy === 'yield' && <ReferenceLine y={benchmark} stroke="#ef4444" strokeDasharray="6 4" label={{ value: `בנצ'מרק ${benchmark}`, fill: '#ef4444', fontSize: 11 }} />}
-                <Bar dataKey={sortBy} radius={[8, 8, 0, 0]}>
-                  {sortedSystems.map((entry, idx) => {
-                    if (idx === 0) return <Cell key={idx} fill="#eab308" />;
+                {sortBy === 'yield' && (
+                  <ReferenceLine
+                    x={benchmark}
+                    stroke="#ef4444"
+                    strokeDasharray="6 4"
+                    label={{ value: `בנצ'מרק ${fmt.num1(benchmark)}`, fill: '#ef4444', fontSize: 11, position: 'top' }}
+                  />
+                )}
+                <Bar dataKey={sortBy} radius={[0, 8, 8, 0]} barSize={18}>
+                  {rankedSystems.map((entry, idx) => {
+                    if (idx === 0) return <Cell key={idx} fill="#eab308" />; // Gold for #1
                     if (sortBy === 'yield') {
                       return <Cell key={idx} fill={entry.yield < benchmark * 0.5 ? '#ef4444' : entry.yield < benchmark * 0.9 ? '#fb8732' : 'url(#yieldGrad)'} />;
                     }
@@ -108,10 +153,11 @@ export default function PerformanceCharts({ data }) {
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
+            </div>
           </div>
         </div>
 
-        <div className="xl:col-span-2 card p-6 overflow-visible">
+        <div className="2xl:col-span-2 card p-6 overflow-visible">
           <h3 className="font-bold text-brand-ink-900"><EditableText id="perf.chart.scatter.title">קשר הספק ↔ ייצור</EditableText></h3>
           <p className="text-xs text-brand-ink-500 mb-4">
             כל נקודה היא מערכת. הקו האדום הוא הבנצ׳מרק הקבוצתי ({fmt.num1(benchmark)} kWh/kWp).
