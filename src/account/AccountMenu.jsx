@@ -1,10 +1,12 @@
 import { useEffect, useRef, useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { LogOut, ChevronDown, Database, Trash2, Upload as UploadIcon } from 'lucide-react';
+import { LogOut, ChevronDown, Database, Trash2, Upload as UploadIcon, ShieldCheck } from 'lucide-react';
 import { useAccount } from './AccountContext.jsx';
+import { useAdmin } from '../admin/AdminContext.jsx';
 
 export default function AccountMenu({ onUpload }) {
   const { currentUser, logout, clearAllData, data } = useAccount();
+  const { isAdmin, loginAdmin, logoutAdmin } = useAdmin();
   const [open, setOpen] = useState(false);
   const ref = useRef(null);
 
@@ -65,6 +67,26 @@ export default function AccountMenu({ onUpload }) {
             >
               <UploadIcon className="w-4 h-4" />
               העלאת קבצים
+            </button>
+
+            <button
+              onClick={() => {
+                if (isAdmin) {
+                  logoutAdmin();
+                  return;
+                }
+                const code = window.prompt('קוד כניסה למצב אדמין');
+                if (code == null) return;
+                if (!loginAdmin(code)) window.alert('קוד שגוי');
+              }}
+              className={`w-full flex items-center gap-2 px-3 py-2 rounded-lg transition text-sm font-semibold ${
+                isAdmin
+                  ? 'bg-brand-green-50 text-brand-green-700 hover:bg-brand-green-100'
+                  : 'hover:bg-brand-ink-100 text-brand-ink-700'
+              }`}
+            >
+              <ShieldCheck className="w-4 h-4" />
+              {isAdmin ? 'יציאה ממצב אדמין' : 'מצב אדמין לעריכת טקסט'}
             </button>
 
             <button
