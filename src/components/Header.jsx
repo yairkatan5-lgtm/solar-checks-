@@ -1,4 +1,4 @@
-import { Calendar, Menu, Linkedin, UploadCloud, LogIn } from 'lucide-react';
+import { Calendar, Menu, Linkedin, UploadCloud, LogIn, ShieldCheck } from 'lucide-react';
 import { motion } from 'framer-motion';
 import Logo from './Logo.jsx';
 import { periodHebrew } from '../utils/format.js';
@@ -6,6 +6,7 @@ import AccountMenu from '../account/AccountMenu.jsx';
 import { useAccount } from '../account/AccountContext.jsx';
 import { TAB_IDS } from './DashboardTabs.jsx';
 import EditableText from '../utils/EditableText.jsx';
+import { useAdmin } from '../admin/AdminContext.jsx';
 
 export default function Header({
   period,
@@ -18,6 +19,7 @@ export default function Header({
   onExitGuest,
 }) {
   const { currentUser } = useAccount();
+  const { isAdmin, loginAdmin, logoutAdmin } = useAdmin();
   const showHero = !!period;
 
   const goTab = (id) => {
@@ -116,6 +118,27 @@ export default function Header({
             <a href="#" className="hidden md:inline-grid place-items-center w-9 h-9 rounded-full bg-brand-ink-100 text-brand-ink-700 hover:bg-brand-ink-200 transition" aria-label="Linkedin">
               <Linkedin className="w-4 h-4" />
             </a>
+            <button
+              type="button"
+              onClick={() => {
+                if (isAdmin) {
+                  logoutAdmin();
+                  return;
+                }
+                const code = window.prompt('קוד כניסה למצב אדמין');
+                if (code == null) return;
+                if (!loginAdmin(code)) window.alert('קוד שגוי');
+              }}
+              className={`hidden md:inline-grid place-items-center w-9 h-9 rounded-full transition ${
+                isAdmin
+                  ? 'bg-brand-green-500 text-white shadow-green'
+                  : 'bg-brand-ink-100 text-brand-ink-700 hover:bg-brand-ink-200'
+              }`}
+              aria-label={isAdmin ? 'יציאה ממצב אדמין' : 'כניסה למצב אדמין'}
+              title={isAdmin ? 'יציאה ממצב אדמין' : 'מצב אדמין'}
+            >
+              <ShieldCheck className="w-4 h-4" />
+            </button>
             <button type="button" className="md:hidden p-2 rounded-lg bg-brand-green-50 text-brand-green-700"><Menu className="w-5 h-5" /></button>
           </div>
         </div>
