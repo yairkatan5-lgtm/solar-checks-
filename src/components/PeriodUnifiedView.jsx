@@ -56,36 +56,76 @@ export default function PeriodUnifiedView({ unified, onDeletePeriod }) {
       </div>
 
       {/* Charts */}
-      <div className="grid lg:grid-cols-2 gap-6">
+      <div className="grid 2xl:grid-cols-2 gap-6">
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-6 overflow-visible">
-          <h3 className="font-extrabold text-brand-ink-900 mb-3">ייצור מול צריכה (kWh)</h3>
-          <div className="h-80">
+          <div className="mb-4 flex items-start justify-between gap-3 flex-wrap">
+            <h3 className="font-extrabold text-brand-ink-900">ייצור מול צריכה</h3>
+            <span className="text-xs font-bold text-brand-ink-500 bg-brand-ink-50 border border-brand-ink-100 rounded-full px-3 py-1">kWh</span>
+          </div>
+          <div className="h-[380px]">
             <ResponsiveContainer>
-              <BarChart data={chartData} margin={{ top: 14, right: 24, left: 28, bottom: 34 }}>
+              <BarChart data={chartData} margin={{ top: 18, right: 24, left: 48, bottom: 38 }} barGap={8}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
-                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={66} />
-                <YAxis width={82} tick={{ fontSize: 11 }} tickFormatter={(v) => fmt.num(v)} />
-                <Tooltip formatter={(v) => fmt.num(v)} />
-                <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Bar dataKey="production" name="ייצור" fill="#ec6f1c" radius={[4, 4, 0, 0]} />
-                <Bar dataKey="consumption" name="צריכה (חשבון)" fill="#dc2626" radius={[4, 4, 0, 0]} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fontSize: 11, fill: '#5b6a7a' }}
+                  interval="preserveStartEnd"
+                  minTickGap={24}
+                  tickMargin={10}
+                  height={52}
+                  stroke="#dde2e8"
+                />
+                <YAxis
+                  width={104}
+                  tick={{ fontSize: 11, fill: '#5b6a7a' }}
+                  tickFormatter={(v) => fmt.num(v)}
+                  domain={[0, (max) => Math.ceil(max * 1.12)]}
+                  stroke="#dde2e8"
+                />
+                <Tooltip
+                  formatter={(v, name) => [`${fmt.num(v)} kWh`, name === 'production' ? 'ייצור' : 'צריכה']}
+                  labelFormatter={(label) => `תקופה: ${label}`}
+                />
+                <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
+                <Bar dataKey="production" name="ייצור" fill="#ec6f1c" radius={[6, 6, 0, 0]} maxBarSize={34} />
+                <Bar dataKey="consumption" name="צריכה (חשבון)" fill="#dc2626" radius={[6, 6, 0, 0]} maxBarSize={34} />
               </BarChart>
             </ResponsiveContainer>
           </div>
         </motion.div>
 
         <motion.div initial={{ opacity: 0, y: 20 }} whileInView={{ opacity: 1, y: 0 }} viewport={{ once: true }} className="card p-6 overflow-visible">
-          <h3 className="font-extrabold text-brand-ink-900 mb-3">רווח סולארי לעומת חשבון חשמל (₪)</h3>
-          <div className="h-80">
+          <div className="mb-4 flex items-start justify-between gap-3 flex-wrap">
+            <h3 className="font-extrabold text-brand-ink-900">רווח סולארי לעומת חשבון חשמל</h3>
+            <span className="text-xs font-bold text-brand-ink-500 bg-brand-ink-50 border border-brand-ink-100 rounded-full px-3 py-1">₪</span>
+          </div>
+          <div className="h-[380px]">
             <ResponsiveContainer>
-              <LineChart data={chartData} margin={{ top: 14, right: 24, left: 28, bottom: 34 }}>
+              <LineChart data={chartData} margin={{ top: 18, right: 24, left: 52, bottom: 38 }}>
                 <CartesianGrid strokeDasharray="3 3" stroke="#eef0f3" />
-                <XAxis dataKey="label" tick={{ fontSize: 11 }} interval={0} angle={-15} textAnchor="end" height={66} />
-                <YAxis width={88} tick={{ fontSize: 11 }} tickFormatter={(v) => '₪' + fmt.num(v)} />
-                <Tooltip formatter={(v) => fmt.money2(v)} />
-                <Legend wrapperStyle={{ fontSize: 12 }} />
-                <Line type="monotone" dataKey="profit" name="רווח סולארי" stroke="#1f9c5a" strokeWidth={3} dot={{ r: 3 }} />
-                <Line type="monotone" dataKey="bill" name="חשבון חשמל" stroke="#dc2626" strokeWidth={3} dot={{ r: 3 }} />
+                <XAxis
+                  dataKey="label"
+                  tick={{ fontSize: 11, fill: '#5b6a7a' }}
+                  interval="preserveStartEnd"
+                  minTickGap={24}
+                  tickMargin={10}
+                  height={52}
+                  stroke="#dde2e8"
+                />
+                <YAxis
+                  width={112}
+                  tick={{ fontSize: 11, fill: '#5b6a7a' }}
+                  tickFormatter={(v) => '₪' + fmt.num(v)}
+                  domain={[0, (max) => Math.ceil(max * 1.12)]}
+                  stroke="#dde2e8"
+                />
+                <Tooltip
+                  formatter={(v, name) => [fmt.money2(v), name === 'profit' ? 'רווח סולארי' : 'חשבון חשמל']}
+                  labelFormatter={(label) => `תקופה: ${label}`}
+                />
+                <Legend wrapperStyle={{ fontSize: 12, paddingTop: 12 }} />
+                <Line type="monotone" dataKey="profit" name="רווח סולארי" stroke="#1f9c5a" strokeWidth={3.5} dot={{ r: 2.5 }} activeDot={{ r: 5 }} />
+                <Line type="monotone" dataKey="bill" name="חשבון חשמל" stroke="#dc2626" strokeWidth={3.5} dot={{ r: 2.5 }} activeDot={{ r: 5 }} />
               </LineChart>
             </ResponsiveContainer>
           </div>
