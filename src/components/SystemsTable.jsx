@@ -69,15 +69,15 @@ export default function SystemsTable({ data }) {
         </div>
       </div>
 
-      <div className="mt-4 card overflow-hidden">
+      <div className="mt-6 card overflow-hidden">
         <div className="overflow-x-auto">
-          <table className="w-full text-sm">
+          <table className="w-full min-w-[1080px] text-sm tabular-nums">
             <thead className="bg-brand-ink-50 text-brand-ink-700">
               <tr>
                 {COLS.map((c) => (
                   <th
                     key={c.key}
-                    className={`px-4 py-3 font-bold cursor-pointer select-none ${c.align === 'left' ? 'text-left' : 'text-right'}`}
+                    className={`px-5 py-4 font-bold cursor-pointer select-none whitespace-nowrap ${c.align === 'left' ? 'text-left' : 'text-right'}`}
                     onClick={() => {
                       if (sortKey === c.key) setDir(dir === 'asc' ? 'desc' : 'asc');
                       else { setSortKey(c.key); setDir('desc'); }
@@ -104,7 +104,7 @@ export default function SystemsTable({ data }) {
                 return (
                   <tr key={s.id} className={`border-t border-brand-ink-100 hover:bg-brand-ink-50/60 ${i % 2 === 0 ? 'bg-white' : 'bg-brand-ink-50/30'}`}>
                     {COLS.map((c) => (
-                      <td key={c.key} className={`px-4 py-3 ${c.align === 'left' ? 'text-left tabular-nums text-brand-ink-900' : 'text-right font-semibold text-brand-ink-900'}`}>
+                      <td key={c.key} className={`px-5 py-4 whitespace-nowrap ${c.align === 'left' ? 'text-left tabular-nums text-brand-ink-900' : 'text-right font-semibold text-brand-ink-900'}`}>
                         {c.key === 'name' ? (
                           <EditableText id={`sys.${s.id}.name`}>{s.name}</EditableText>
                         ) : (
@@ -112,7 +112,7 @@ export default function SystemsTable({ data }) {
                         )}
                       </td>
                     ))}
-                    <td className="px-4 py-3 text-left">
+                    <td className="px-5 py-4 text-left whitespace-nowrap">
                       <span className={`inline-flex items-center gap-1 px-2 py-1 rounded-md text-xs font-bold ${status.c}`}>
                         <span className="w-1.5 h-1.5 rounded-full bg-current" />
                         {status.l}
