@@ -155,7 +155,7 @@ export default function AuthScreen({ onGuest, onHomeTask }) {
               משימת בית (טעינת נתונים מלאה)
             </button>
             <button
-              onClick={onGuest}
+              onClick={onHomeTask}
               className="text-sm font-semibold text-brand-ink-500 hover:text-brand-orange-500 transition inline-flex items-center justify-center gap-1.5"
             >
               <Eye className="w-4 h-4" />
