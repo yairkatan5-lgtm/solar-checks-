@@ -81,25 +81,25 @@ export default function SolarSummaryHub({
           </div>
         )}
 
-        <div className="card p-4 md:p-5 space-y-4">
+        <div className="card p-5 md:p-6 space-y-5">
           <PeriodFilterBar unified={unifiedFull} selection={selection} onChange={onSelectionChange} />
-          <div className="overflow-x-auto rounded-lg border border-brand-ink-100">
-            <table className="w-full text-sm tabular-nums min-w-[900px]">
+          <div className="overflow-x-auto rounded-xl border border-brand-ink-100">
+            <table className="w-full text-sm tabular-nums min-w-[1280px]">
               <thead>
                 <tr className="bg-brand-ink-50 text-xs text-brand-ink-600 border-b border-brand-ink-100">
-                  <th className="text-right py-2.5 px-2 font-bold">תקופה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">מקור</th>
-                  <th className="text-right py-2.5 px-2 font-bold">הערה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">ייצור</th>
-                  <th className="text-right py-2.5 px-2 font-bold">ערך ייצור</th>
-                  <th className="text-right py-2.5 px-2 font-bold">הזרמה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">ערך הזרמה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">צ. עצמית</th>
-                  <th className="text-right py-2.5 px-2 font-bold">ערך צ.ע.</th>
-                  <th className="text-right py-2.5 px-2 font-bold">דמי הגנה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">דמי הולכה</th>
-                  <th className="text-right py-2.5 px-2 font-bold">דמי איזון</th>
-                  <th className="text-right py-2.5 px-2 font-bold">רווח נטו</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">תקופה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">מקור</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">הערה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">ייצור</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">ערך ייצור</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">הזרמה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">ערך הזרמה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">צ. עצמית</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">ערך צ.ע.</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">דמי הגנה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">דמי הולכה</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">דמי איזון</th>
+                  <th className="text-right py-3.5 px-4 font-bold whitespace-nowrap">רווח נטו</th>
                 </tr>
               </thead>
               <tbody>
@@ -114,23 +114,23 @@ export default function SolarSummaryHub({
                     const p = it.period;
                     return (
                       <tr key={`${p.range}-${i}`} className="border-b border-brand-ink-100/70 hover:bg-brand-ink-50/40">
-                        <td className="py-2.5 px-2 font-bold text-brand-ink-900 whitespace-nowrap">{p.range}</td>
-                        <td className="py-2.5 px-2 text-xs font-semibold text-brand-green-700 whitespace-nowrap">
+                        <td className="py-3.5 px-4 font-bold text-brand-ink-900 whitespace-nowrap">{p.range}</td>
+                        <td className="py-3.5 px-4 text-xs font-semibold text-brand-green-700 whitespace-nowrap">
                           {sourceLabelForItem(it)}
                         </td>
-                        <td className="py-2.5 px-2 text-xs text-brand-ink-600 max-w-[140px] truncate" title={p.label || ''}>
+                        <td className="py-3.5 px-4 text-xs text-brand-ink-600 max-w-[180px] truncate" title={p.label || ''}>
                           {p.label || '—'}
                         </td>
-                        <td className="py-2.5 px-2">{fmt.num(p.production_kwh)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.production_value_nis)}</td>
-                        <td className="py-2.5 px-2">{fmt.num(p.export_kwh)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.export_value_nis)}</td>
-                        <td className="py-2.5 px-2">{fmt.num(p.self_consumption_kwh)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.self_consumption_value_nis)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.protection_fee_nis)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.transport_fee_nis)}</td>
-                        <td className="py-2.5 px-2">{fmt.money2(p.balance_fee_nis)}</td>
-                        <td className="py-2.5 px-2 font-extrabold text-brand-green-600">{fmt.money2(p.net_solar_profit_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.num(p.production_kwh)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.production_value_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.num(p.export_kwh)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.export_value_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.num(p.self_consumption_kwh)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.self_consumption_value_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.protection_fee_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.transport_fee_nis)}</td>
+                        <td className="py-3.5 px-4 whitespace-nowrap">{fmt.money2(p.balance_fee_nis)}</td>
+                        <td className="py-3.5 px-4 font-extrabold text-brand-green-600 whitespace-nowrap">{fmt.money2(p.net_solar_profit_nis)}</td>
                       </tr>
                     );
                   })
