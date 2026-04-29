@@ -2,6 +2,7 @@ export const TAB_IDS = {
   summary: 'summary',
   performance: 'performance',
   health: 'health',
+  environment: 'environment',
   systems: 'systems',
 };
 
@@ -10,6 +11,7 @@ export default function DashboardTabs({ activeTab, onTabChange, hasPeriodView, h
     { id: TAB_IDS.performance, label: 'ביצועים', show: hasSolar },
     { id: TAB_IDS.summary, label: 'סיכום ותקופות', show: hasPeriodView },
     { id: TAB_IDS.health, label: 'בריאות תיק', show: hasSolar && !isSynthesized },
+    { id: TAB_IDS.environment, label: 'השפעה סביבתית', show: hasSolar },
     { id: TAB_IDS.systems, label: 'מערכות', show: hasSolar && !isSynthesized },
   ].filter((x) => x.show);
 
