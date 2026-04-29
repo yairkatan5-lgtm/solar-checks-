@@ -9,6 +9,7 @@ import ChargingPhone from './animated/ChargingPhone.jsx';
 import CleanFactory from './animated/CleanFactory.jsx';
 import Earth from './animated/Earth.jsx';
 import Confetti from './animated/Confetti.jsx';
+import EditableText from '../utils/EditableText.jsx';
 
 export default function EnvironmentalImpact({ data }) {
   const env = data?.environmental;
@@ -39,10 +40,13 @@ export default function EnvironmentalImpact({ data }) {
         >
           <div className="eyebrow">השפעה סביבתית</div>
           <h2 className="section-title mt-2 text-gradient-green">
-            חסכת לכוכב יותר ממה שחשבת
+            <EditableText id="impact.title" defaultVal="חסכת לכוכב יותר ממה שחשבת" />
           </h2>
           <p className="lede mt-3">
-            כל קילוואט שעה שיוצרת המערכת שלך מחליפה ייצור מתחנת כוח מזהמת. הנה התרגום בעולם האמיתי – באנימציה.
+            <EditableText
+              id="impact.subtitle"
+              defaultVal="כל קילוואט שעה שיוצרת המערכת שלך מחליפה ייצור מתחנת כוח מזהמת. זו התרומה שלך לאוויר נקי יותר, במספרים שאפשר לראות."
+            />
           </p>
         </motion.div>
 
@@ -104,7 +108,8 @@ export default function EnvironmentalImpact({ data }) {
             className="flex flex-col items-center justify-center relative"
           >
             <div className="absolute z-10 bg-white/90 backdrop-blur-sm px-4 py-2 rounded-full border border-brand-green-200 text-brand-green-800 font-extrabold text-sm md:text-base shadow-lg -translate-y-6 text-center shadow-green">
-              בזכותך העולם טיפה יותר נקי<br />והוא מחייך 😊
+              <EditableText id="impact.earth_note" defaultVal="בזכותך העולם טיפה יותר נקי" /><br />
+              <EditableText id="impact.earth_note_2" defaultVal="ותודה שאתה חלק מזה" />
             </div>
             <Earth size={260} />
           </motion.div>
@@ -141,7 +146,7 @@ export default function EnvironmentalImpact({ data }) {
               <CountUp value={env.households_powered_month} decimals={1} />
             </div>
             <div className="text-sm font-semibold text-brand-green-700 mt-1">
-              בתים מואספים בחודש
+              בתים מוארים בחודש
             </div>
             <div className="text-xs text-brand-ink-500 mt-2 leading-snug">
               צריכת חשמל ביתית ממוצעת: ~583 kWh/חודש. הבתים שלנו מאושרים ומוארים – בזכותך.
