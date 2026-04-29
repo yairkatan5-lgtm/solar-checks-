@@ -1,7 +1,7 @@
 import { useMemo, useState } from 'react';
 import {
   BarChart, Bar, XAxis, YAxis, Tooltip, ResponsiveContainer, CartesianGrid,
-  ScatterChart, Scatter, ZAxis, ReferenceLine, Cell,
+  ScatterChart, Scatter, ZAxis, ReferenceLine, Cell, LabelList,
 } from 'recharts';
 import { fmt } from '../utils/format.js';
 import EditableText from '../utils/EditableText.jsx';
@@ -93,7 +93,7 @@ export default function PerformanceCharts({ data }) {
               <BarChart
                 data={rankedSystems}
                 layout="vertical"
-                margin={{ top: 12, right: 44, left: 20, bottom: 18 }}
+                margin={{ top: 12, right: 90, left: 20, bottom: 18 }}
               >
                 <defs>
                   <linearGradient id="prodGrad" x1="0" y1="0" x2="0" y2="1">
@@ -150,6 +150,12 @@ export default function PerformanceCharts({ data }) {
                     }
                     return <Cell key={idx} fill={sortBy === 'production' ? 'url(#prodGrad)' : 'url(#revGrad)'} />;
                   })}
+                  <LabelList
+                    dataKey={sortBy}
+                    position="right"
+                    style={{ fill: '#334155', fontSize: 11, fontWeight: 600 }}
+                    formatter={(v) => sortBy === 'yield' ? fmt.num1(v) : sortBy === 'revenue' ? fmt.money(v) : fmt.num(v)}
+                  />
                 </Bar>
               </BarChart>
             </ResponsiveContainer>
