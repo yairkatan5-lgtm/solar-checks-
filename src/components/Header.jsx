@@ -115,7 +115,13 @@ export default function Header({
               <AccountMenu onUpload={onUpload} />
             )}
 
-            <a href="#" className="hidden md:inline-grid place-items-center w-9 h-9 rounded-full bg-brand-ink-100 text-brand-ink-700 hover:bg-brand-ink-200 transition" aria-label="Linkedin">
+            <a
+              href="https://www.linkedin.com/in/yair-katan/"
+              target="_blank"
+              rel="noreferrer"
+              className="hidden md:inline-grid place-items-center w-9 h-9 rounded-full bg-brand-ink-100 text-brand-ink-700 hover:bg-brand-ink-200 transition"
+              aria-label="Linkedin"
+            >
               <Linkedin className="w-4 h-4" />
             </a>
             <button
