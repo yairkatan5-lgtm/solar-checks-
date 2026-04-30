@@ -1,72 +1,114 @@
-# דשבורד סולארי — אנרגיה ירוקה
+# Solar Portfolio Dashboard ☀️
 
-דשבורד אינטראקטיבי בעברית (RTL) שמציג ביצועים, הכנסות, תובנות והשפעה סביבתית של תיק מערכות סולאריות.
-נבנה בעקבות הקובץ `ייצור מערכות סולאריות - מבחן בית.xlsx`.
+> An interactive, Hebrew (RTL) analytics dashboard for managing and monitoring a portfolio of solar energy systems — built from raw Excel data.
 
+---
 
-## הפעלה מקומית
+## Overview
 
-```bash
-npm install
-npm run dev
-```
+This project transforms a raw Excel-based solar systems dataset into a fully interactive web dashboard. Instead of manually slicing data in spreadsheets, operators and analysts can instantly explore system performance, track revenue, identify underperformers, and quantify environmental impact — all in one place, in Hebrew.
 
-הדפדפן ייפתח בכתובת [http://localhost:5173](http://localhost:5173)
+The pipeline is simple: drop in an updated Excel file, run `npm run ingest`, and the dashboard reflects the latest data.
 
-## עדכון נתונים מקובץ אקסל
+---
 
-הסקריפט קורא את הקובץ מנתיב ההורדה המקורי, מחשב את כל ה-KPI, ושומר ל-`src/data/solar-data.json`.
+## Features
+
+### 📊 Summary Table
+A central, Excel-like view (columns A–L) with period filtering, clickable electricity bill references, and one-click **Excel export** using a pre-built template (ExcelJS).
+
+### ⚡ KPI Cards
+At-a-glance metrics: active systems, total installed capacity, cumulative production, total revenue, and portfolio specific yield.
+
+### 📈 Performance Charts
+- System rankings by production, revenue, and specific yield
+- Scatter plot: capacity vs. production, benchmarked against **135 kWh/kWp** (March standard)
+- Instant identification of over- and under-performers
+
+### 🔍 Smart Insights
+Automatically surfaces:
+- Systems requiring attention
+- Portfolio leaders
+- Estimated lost revenue potential
+
+### 🌍 Environmental Impact (Animated)
+Visualizes CO₂ savings using Israel's grid emission factor (**0.434 kg CO₂/kWh**), with animated equivalents: trees saved, cars taken off the road, houses powered, phones charged, and factories offset. Numbers animate from 0 on load.
+
+### 🗂️ Systems Table
+Full searchable, sortable systems table with CSV export.
+
+---
+
+## Tech Stack
+
+| Layer | Technology |
+|-------|------------|
+| Frontend | React 18 + Vite |
+| Styling | Tailwind CSS (solar theme) |
+| Charts | Recharts |
+| Icons | lucide-react |
+| Excel Export | ExcelJS |
+| Data Pipeline | Node.js (`scripts/read-excel.cjs`) |
+
+---
+
+## Data Pipeline
+
+The dashboard reads from `src/data/solar-data.json`, which is generated from the source Excel file:
 
 ```bash
 npm run ingest
 ```
 
-> אם נתיב הקובץ שונה — ערכו את `scripts/read-excel.cjs` (שורת `const file = ...`).
+To point to a different Excel file, edit the path in `scripts/read-excel.cjs`.
 
-## סיכום סולארי וייצוא Excel
+---
 
-- **תצוגה מרכזית** — טבלה בעמודות כמו בפרסור קובץ הסיכום (A–L), סינון תקופות, וקישור לחשבונות חשמל.
-- **תבנית ייצוא:** `public/templates/solar-summary-template.xlsx` — ניתן להחליף בקובץ המקורי מהמשימה (הנחיות ב־`public/templates/README.txt`). ליצירת תבנית ברירת מחדל: `npm run generate-template`.
-- **ייצוא:** כפתור «ייצוא סיכום (Excel)» ממלא את התבנית בדפדפן (ExcelJS). אם התבנית חסרה, נופל לייצוא XLSX פשוט.
+## Methodology
 
-## מה כולל הדשבורד?
+- **Specific Yield**: `kWh / kWp` — normalizes production across systems of different sizes
+- **March Benchmark**: 135 kWh/kWp (industry standard for Israel)
+- **CO₂ Savings**: based on Israel grid factor of **0.434 kg CO₂/kWh**
+- **CO₂ Equivalents**: tree absorbs ~21 kg/year, average car emits ~4,600 kg/year
+- **Revenue**: `Production × weighted tariff` per system
 
-1. **כותרת וטאבים** — ניווט בין סיכום ותקופות, ביצועים, בריאות תיק, השפעה סביבתית ומערכות; העלאת קבצים.
-2. **סיכום סולארי + תקופות** — טבלת ניתוח, גרפים וכרטיסים מול חשבון החשמל (אחרי טעינת קבצים).
-3. **כרטיסי KPI** — מערכות פעילות, הספק כולל, ייצור, הכנסות, תפוקה ספציפית.
-4. **גרפי ביצועים** — דירוג מערכות (לפי ייצור / הכנסות / תפוקה ספציפית) + מפת פיזור הספק/ייצור עם קו בנצ'מרק (135 kWh/kWp).
-5. **תובנות חכמות** — מערכות הדורשות טיפול, מובילות התיק, ופוטנציאל הכנסה אבוד.
-6. **השפעה סביבתית (משחקית ואנימטיבית)** — סך טון CO₂ שנחסכו עם **כדור הארץ מסתובב**, **8 עצים מחייכים** קופצים פנימה, **מכוניות נוסעות** משמאל לימין על כביש מצויר, **בית מחייך** עם פאנלים על הגג ושמש מסתובבת, **טלפון חכם** שמטעין את עצמו עם ברק, **מפעל נקי** עם לוגו "ללא זיהום" שעולה ממנו עלים ירוקים. כל המספרים מתחילים מ-0 וזוחלים עד ערכם האמיתי בכניסה לתצוגה.
-7. **טבלת מערכות** — ניתנת לחיפוש, מיון ויצוא ל-CSV.
+---
 
-## מתודולוגיה
-
-- **תפוקה ספציפית (Specific Yield):** kWh / kWp — אמת מידה תעשייתית להשוואה בין מערכות בגדלים שונים.
-- **בנצ'מרק חודש מרץ:** 135 kWh/kWp בממוצע (מרכז הארץ).
-- **מקדם פליטה — רשת ישראל:** 0.434 kg CO₂ / kWh.
-- **שווי-ערך פחמן:** עץ בוגר 21 ק"ג CO₂/שנה, מכונית 4,600 ק"ג CO₂/שנה (~120 ג'/ק"מ), משק בית 583 kWh/חודש.
-- **הכנסה למערכת:** Production × Tariff. תעריף ממוצע משוקלל מחושב ברמת התיק.
-
-## מבנה פרויקט
+## Project Structure
 
 ```
 solar-dashboard/
 ├── scripts/
-│   ├── read-excel.cjs   # קריאת ה-XLSX
-│   └── compute.cjs      # חישוב KPI ויצירת JSON
+│   ├── read-excel.cjs       # Parses Excel → JSON
+│   └── compute.cjs          # KPI & metric calculations
 ├── src/
-│   ├── components/      # Header, KPI, Charts, Insights, Impact, Table, Footer
-│   ├── data/solar-data.json
-│   ├── utils/format.js
-│   ├── App.jsx
-│   ├── main.jsx
-│   └── index.css
-└── ...
+│   ├── components/          # Header, KPICards, Charts, InsightsPanel, etc.
+│   ├── data/
+│   │   └── solar-data.json  # Generated data source
+│   └── utils/
+│       └── format.js        # Number & date formatting helpers
+└── public/
+    └── templates/
+        └── solar-summary-template.xlsx  # Excel export template
 ```
 
-## טכנולוגיות
+---
 
-- React 18 + Vite
-- Tailwind CSS (theme סולארי מותאם)
-- Recharts (גרפים)
-- lucide-react (אייקונים)
+## Getting Started
+
+```bash
+# Install dependencies
+npm install
+
+# Ingest data from Excel
+npm run ingest
+
+# Start development server
+npm run dev
+```
+
+---
+
+## License
+
+MIT
